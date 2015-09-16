@@ -1,14 +1,16 @@
 package com.example.service;
 
-import com.example.domain.Customer;
-import com.example.repository.CustomerRepository;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.example.domain.Customer;
+import com.example.domain.User;
+import com.example.repository.CustomerRepository;
 
 @Service
 @Transactional
@@ -17,7 +19,8 @@ public class CustomerService {
     CustomerRepository customerRepository;
 
     public List<Customer> findAll() {
-        return customerRepository.findAllOrderByName();
+//        return customerRepository.findAllOrderByName();
+        return customerRepository.findAllWithUserOrderByName();
     }
 
     public Page<Customer> findAll(Pageable pageable) {
@@ -33,6 +36,16 @@ public class CustomerService {
     }
 
     public Customer update(Customer customer) {
+        return customerRepository.save(customer);
+    }
+
+    public Customer create(Customer customer, User user) {
+    	customer.setUser(user);
+        return customerRepository.save(customer);
+    }
+
+    public Customer update(Customer customer, User user) {
+    	customer.setUser(user);
         return customerRepository.save(customer);
     }
 
